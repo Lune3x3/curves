@@ -73,10 +73,10 @@ list_x_offset = 20
 list_y_offset = 50
 pos = [[0, 0], [300, 200], [400, 100], [70, 0]]
 counter = 0
-test = lineSeg(pos[0], pos[1], pos[2], pos[3])
+#test = lineSeg(pos[0], pos[1], pos[2], pos[3])
 
-selected = test
-lineObjs.append(test)
+#selected = test
+#lineObjs.append(test)
 
 # loading saved
 filedata = load_json("assets/plotter.json")
@@ -85,6 +85,8 @@ for line in filedata["lines"]:
     points = line["points"]
     segment = lineSeg(points[0], points[1], points[2], points[3])
     lineObjs.append(segment)
+
+selected = lineObjs[0]
 
 running = True
 while running:

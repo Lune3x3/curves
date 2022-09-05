@@ -8,7 +8,6 @@ width = 500
 
 screen = pygame.display.set_mode((width, height))
 
-
 # linear interpolation
 def lerp(a, b, c):
     return (b-a)*c+a
@@ -25,6 +24,10 @@ def save_json(path, data):
     with open(path, 'w') as file:
         json.dump(data, file)
         file.close()
+
+lineObjs = []
+x = []
+y = []
 
 #index 0 = x
 #index 1 = y
@@ -53,12 +56,12 @@ class lineSeg:
             pFinal = pow(1 - t, 3) * p0 + pow(1 - t, 2) * 3 * t * p1 + (1 - t) * 3 * t * t * p2 + t * t * t * p3
             out.append(pFinal)
         return out
-    
+
     def listGen(self):
         x = self.bezier(self.p0[0], self.p1[0], self.p2[0], self.p3[0])
         y = self.bezier(self.p0[1], self.p1[1], self.p2[1], self.p3[1])
         return x, y
-    
+
     def update(self):
         self.p0 = [self.rP0.x + 3, self.rP0.y + 3]
         self.p1 = [self.rP1.x + 3, self.rP1.y + 3]
@@ -68,12 +71,12 @@ class lineSeg:
 # lol
 list_x_offset = 20
 list_y_offset = 50
-
-lineObjs = []
-x = []
-y = []
-
+pos = [[0, 0], [300, 200], [400, 100], [70, 0]]
 counter = 0
+test = lineSeg(pos[0], pos[1], pos[2], pos[3])
+
+selected = test
+lineObjs.append(test)
 
 # loading saved
 filedata = load_json("assets/plotter.json")
@@ -108,6 +111,8 @@ while running:
             if event.button == 1:
                 for i in lineObjs:
                     if i.rP0.collidepoint(event.pos):
+                        selected = i
+
                         i.p0Dragging = True
                         mouse_x, mouse_y = event.pos
                         offset_x = i.rP0.x - mouse_x
@@ -128,7 +133,7 @@ while running:
                         offset_x = i.rP3.x - mouse_x
                         offset_y = i.rP3.y - mouse_y
         elif event.type == pygame.MOUSEBUTTONUP:
-            if event.button == 1:            
+            if event.button == 1:
                 for i in lineObjs:
                     i.p0Dragging = False
                     i.p1Dragging = False
@@ -172,14 +177,15 @@ while running:
         temp_x, temp_y = i.listGen()
         x.append(temp_x)
         y.append(temp_y)
-    
+
     x1, y1 = x, y
-    
+
     for i in lineObjs:
         pygame.draw.rect(screen, (255, 0, 0), i.rP0)
-        pygame.draw.rect(screen, (255, 0, 0), i.rP1)
-        pygame.draw.rect(screen, (255, 0, 0), i.rP2)
         pygame.draw.rect(screen, (255, 0, 0), i.rP3)
+        if selected == i:
+            pygame.draw.rect(screen, (0, 0, 255), i.rP1)
+            pygame.draw.rect(screen, (0, 0, 255), i.rP2)
 
     for j in range(len(lineObjs)):
         for i in range(len(x[j])):

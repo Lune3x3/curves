@@ -8,9 +8,6 @@ width = 500
 
 screen = pygame.display.set_mode((width, height))
 
-lineObjs = []
-x = []
-y = []
 
 # linear interpolation
 def lerp(a, b, c):
@@ -72,13 +69,19 @@ class lineSeg:
 list_x_offset = 20
 list_y_offset = 50
 
+lineObjs = []
+x = []
+y = []
 
-
-pos = [[0, 0], [300, 200], [400, 100], [70, 0]]
 counter = 0
-test = lineSeg(pos[0], pos[1], pos[2], pos[3])
 
-lineObjs.append(test)
+# loading saved
+filedata = load_json("assets/plotter.json")
+# add lines
+for line in filedata["lines"]:
+    points = line["points"]
+    segment = lineSeg(points[0], points[1], points[2], points[3])
+    lineObjs.append(segment)
 
 running = True
 while running:

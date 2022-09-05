@@ -1,4 +1,6 @@
 import pygame
+import json
+
 pygame.init()
 
 height = 500
@@ -9,6 +11,23 @@ screen = pygame.display.set_mode((width, height))
 lineObjs = []
 x = []
 y = []
+
+# linear interpolation
+def lerp(a, b, c):
+    return (b-a)*c+a
+
+# loading from json
+def load_json(path):
+    with open(path, 'r') as file:
+        data = json.load(file)
+        file.close()
+    # get points and lines
+    return data
+
+def save_json(path, data):
+    with open(path, 'w') as file:
+        json.dump(data, file)
+        file.close()
 
 #index 0 = x
 #index 1 = y
@@ -52,6 +71,9 @@ class lineSeg:
 # lol
 list_x_offset = 20
 list_y_offset = 50
+
+
+
 pos = [[0, 0], [300, 200], [400, 100], [70, 0]]
 counter = 0
 test = lineSeg(pos[0], pos[1], pos[2], pos[3])

@@ -72,7 +72,7 @@ while running:
                         for i in range(4):
                             pos[i][0] += list_x_offset
                         counter += list_x_offset
-                        lineObjs.append(lineSeg(pos[0], pos[1], pos[2], pos[3]))
+                        lineObjs.append(lineSeg(lineObjs[-1].p3, pos[1], pos[2], pos[3]))
                     else:
                         for i in range(4):
                             pos[i][0] -= counter
